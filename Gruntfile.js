@@ -2,6 +2,7 @@
 
 module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-contrib-jshint');
+  grunt.loadNpmTasks('grunt-simple-mocha');
 
   grunt.initConfig({
     jshint: {
@@ -20,9 +21,22 @@ module.exports = function(grunt) {
           afterEach: true
         }
       }
+    },
+    simplemocha: {
+      options: {
+        globals: ['should'],
+        timeout: 3000,
+        ignoreLeaks: false,
+        // grep: '*-test',
+        ui: 'bdd',
+        reporter: 'tap'
+      },
+      dev: {
+        src: ['test/**/*.js']
+      }
     }
   });
 
-  grunt.registerTask('test', ['jshint:dev']);
+  grunt.registerTask('test', ['jshint:dev', 'simplemocha:dev']);
   grunt.registerTask('default', ['test']);
 };
